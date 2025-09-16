@@ -11,7 +11,7 @@
       "id": "SYNTH-PATTERN-1",
       "name": "Synthetic.Pattern.DLLImport",
       "type": "pattern",
-      "pattern": "DllImport\(\)"
+      "pattern": "DllImport\\(\\)"
     }
   ]
 }
