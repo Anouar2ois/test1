@@ -28,3 +28,12 @@ Production-ready plan and runnable examples with safe defaults.
 
 ## Upgrade Notes
 - v1 components remain compatible; v2 adds new modules under `dragonshield_v2/`, `cloud/`, `deploy/`, `native/`, and enhanced `blockchain/`.
+
+## Build & Deploy
+- Docker (cloud API v2): `docker build -f docker/Dockerfile.cloud -t dragonshield/api-v2:latest .`
+- Kubernetes: `kubectl apply -f deploy/k8s/api-deployment.yaml`
+- Rust client: `cd native/dragonshield_rust && cargo build --release`
+- Tests: `pytest -q`
+
+## Mobile (Android)
+- Prototype path: use on-device scanning via Rust core + JNI; not included here. Provide Gradle module wrapping `dragonshield_rust` in future work.
