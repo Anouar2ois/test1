@@ -14,6 +14,6 @@ def test_advanced_static(tmp_path: Path):
 
 def test_seq_model_with_sandbox():
 	orch = SandboxOrchestratorV2()
-	report = torch.run_dynamic(Path("C:/fake.exe"))
+	report = orch.run_dynamic(Path("C:/fake.exe"))
 	pred = infer_sequence(report["events"])
 	assert "confidence" in pred
