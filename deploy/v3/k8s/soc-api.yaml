@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dragonshield-soc-v3
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dragonshield-soc-v3
+  template:
+    metadata:
+      labels:
+        app: dragonshield-soc-v3
+    spec:
+      containers:
+      - name: api
+        image: dragonshield/soc-v3:latest
+        ports:
+        - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dragonshield-soc-v3
+spec:
+  selector:
+    app: dragonshield-soc-v3
+  ports:
+  - port: 80
+    targetPort: 8000
