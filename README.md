@@ -109,3 +109,34 @@ uvicorn v3.cloud.soc_api:app --reload
 ```
 
 See `v3/` for sources and `deploy/v3/` for Kubernetes manifests.
+
+## v4.0 Update (Preview)
+- Neuro-symbolic defense: deep predictions + rule synthesis and proof artifacts.
+- Quantum-resilient transport (simulated Kyber/Dilithium), swarm gossip, privacy market stubs.
+- SOC API v4 with transparency logs.
+
+Quickstart (safe synthetic):
+- Neuro-symbolic:
+```python
+from v4.neurosym.reasoner import NeuroSymbolicReasoner
+r=NeuroSymbolicReasoner(); r.synthesize_rules(["api:VirtualAlloc","ioc:domain_x"]); print(r.prove_decision({},"block"))
+```
+- PQ transport:
+```python
+from v4.crypto.pq_transport import PQTransport
+print(PQTransport().handshake())
+```
+- Swarm gossip:
+```python
+from v4.swarm.gossip import SecureGossip
+g=SecureGossip(); g.add_neighbor("peer1"); print(g.disseminate({"sig":"abc"}))
+```
+- Privacy market:
+```python
+from v4.market.privacy_exchange import PrivacyMarket
+print(PrivacyMarket().aggregate_securely())
+```
+- SOC API v4:
+```bash
+uvicorn v4.cloud.soc_api_v4:app --reload
+```
