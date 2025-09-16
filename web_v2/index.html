@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>DragonShield v2</title>
+	<style>
+		body { font-family: Arial, sans-serif; margin: 2rem; }
+		#timeline div { border-left: 3px solid #007acc; padding-left: .5rem; margin: .25rem 0; }
+		#result { white-space: pre-wrap; background: #f6f8fa; padding: 1rem; }
+	</style>
+</head>
+<body>
+	<h1>DragonShield v2</h1>
+	<input type="file" id="file" />
+	<button id="scan">Scan</button>
+	<label><input type="checkbox" id="optin" /> Publish to blockchain</label>
+	<h3>Verdict</h3>
+	<pre id="result"></pre>
+	<h3>Behavior Timeline</h3>
+	<div id="timeline"></div>
+	<script>
+	function renderTimeline(events){
+		const tl = document.getElementById('timeline');
+		tl.innerHTML = '';
+		(events||[]).forEach(e=>{
+			const d = document.createElement('div');
+			d.textContent = JSON.stringify(e);
+			tl.appendChild(d);
+		});
+	}
+	document.getElementById('scan').onclick = async () => {
+		const f = document.getElementById('file').files[0];
+		if (!f) return alert('Pick a file');
+		const fd = new FormData(); fd.append('file', f);
+		const res = await fetch('/scan', { method:'POST', body: fd });
+		const json = await res.json();
+		document.getElementById('result').textContent = JSON.stringify(json, null, 2);
+		const events = json?.details?.sandbox?.events || [];
+		renderTimeline(events);
+		if (document.getElementById('optin').checked && json?.details?.static?.sha256){
+			await fetch('/chain/publish', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ id:'AUTO-'+Date.now(), name:'v2auto', sha256: json.details.static.sha256 })});
+		}
+	}
+	</script>
+</body>
+</html>
