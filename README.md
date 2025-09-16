@@ -78,3 +78,34 @@ DragonShield MVP demonstrates an end-to-end pipeline: static signature checks, s
 - Add signatures to `dragonshield/signatures.json` or via `python -m dragonshield.sigdb_cli add --id X --name N --pattern PATTERN`.
 - Replace sandbox with a real orchestrator (QEMU/Firecracker) in a lab.
 - Retrain model with your traces by adapting `behavior_features.py` and `scripts/train_ai.py`.
+
+## v3.0 Update (Preview)
+- Autonomous response: process isolation, rollback, network quarantine (simulated).
+- Predictive security: synthetic generative/sequence model demo and federated learning coordinator/client.
+- DAO governance: v3 contracts and SOC API v3 skeleton.
+
+Quickstart (safe synthetic):
+- Response engine:
+```python
+from v3.agent.response_engine import PolicyDecisionEngine
+from pathlib import Path
+e=PolicyDecisionEngine(); print(e.handle_event({"type":"net_connect","tags":["suspicious"],"pid":1234}, Path(".")))
+```
+- Predictive AI:
+```python
+from v3.ai.predictive import train_simple_predictor, infer_predictor
+m=train_simple_predictor(); print(infer_predictor(m,[0.3,0.4,1,1]))
+```
+- Federated learning:
+```python
+from v3.federated.coordinator import FedCoordinator
+from v3.federated.client_sim import local_train
+c=FedCoordinator(); t=c.assign_task()
+print(c.aggregate([local_train(t["model"]), local_train(t["model"])]))
+```
+- SOC API v3:
+```bash
+uvicorn v3.cloud.soc_api:app --reload
+```
+
+See `v3/` for sources and `deploy/v3/` for Kubernetes manifests.
