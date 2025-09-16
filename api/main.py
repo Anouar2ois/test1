@@ -27,12 +27,21 @@ class Signature(BaseModel):
 
 @app.post("/scan")
 async def scan(file: UploadFile = File(...)):
-	with tempfile.NamedTemporaryFile(delete=True) as tmp:
+	tmp_path: Path | None = None
+	try:
 		content = await file.read()
-		tmp.write(content)
-		tmp.flush()
-		result = orch.scan_file(Path(tmp.name))
+		with tempfile.NamedTemporaryFile(delete=False) as tmp:
+			tmp.write(content)
+			tmp.flush()
+			tmp_path = Path(tmp.name)
+		result = orch.scan_file(tmp_path)
 		return result
+	finally:
+		if tmp_path is not None and tmp_path.exists():
+			try:
+				tmp_path.unlink()
+			except Exception:
+				pass
 
 
 app.include_router(chain_router)
