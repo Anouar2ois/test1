@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>DragonShield Antivirus</title>
+	<style>
+		body { font-family: Arial, sans-serif; margin: 2rem; }
+		#result { white-space: pre; background: #f5f5f5; padding: 1rem; }
+	</style>
+</head>
+<body>
+	<h1>DragonShield Antivirus (MVP)</h1>
+	<p>Safe, synthetic demo. Do not upload real malware.</p>
+	<input type="file" id="file" />
+	<button id="scan">Scan</button>
+	<label>
+		<input type="checkbox" id="optin" /> Opt-in to publish signatures (mock chain)
+	</label>
+	<pre id="result"></pre>
+	<script>
+	const scanBtn = document.getElementById('scan');
+	scanBtn.onclick = async () => {
+		const f = document.getElementById('file').files[0];
+		if (!f) return alert('Choose a file');
+		const fd = new FormData();
+		fd.append('file', f);
+		const res = await fetch('/scan', { method: 'POST', body: fd });
+		const json = await res.json();
+		document.getElementById('result').textContent = JSON.stringify(json, null, 2);
+		if (document.getElementById('optin').checked && json.details && json.details.static && json.details.static.sha256) {
+			await fetch('/chain/publish', {
+				method: 'POST',
+				headers: {'Content-Type': 'application/json'},
+				body: JSON.stringify({ id: 'AUTO-'+Date.now(), name: 'AutoSig', sha256: json.details.static.sha256 })
+			});
+		}
+	};
+	</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "signatures": [
+    {
+      "id": "SYNTH-EICAR-1",
+      "name": "Synthetic.EICAR.Test",
+      "type": "hash",
+      "sha256": "275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f"
+    },
+    {
+      "id": "SYNTH-PATTERN-1",
+      "name": "Synthetic.Pattern.DLLImport",
+      "type": "pattern",
+      "pattern": "DllImport\(\)"
+    }
+  ]
+}
